@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-/* INFOTYPE */
+/* infotype gudang dan barang */
 
 struct infotype_gudang {
     string id_gudang;
@@ -20,12 +20,14 @@ struct infotype_barang {
     string kondisi;
 };
 
-/* ELEMEN */
+/* elemen */
+
+struct elm_relasi;
 
 struct elm_gudang {
     infotype_gudang info;
     elm_gudang *next;
-    struct elm_relasi *firstRelasi;
+    elm_relasi *firstRelasi;
 };
 
 struct elm_barang {
@@ -38,13 +40,13 @@ struct elm_relasi {
     elm_relasi *next;
 };
 
-/* POINTER */
+/* pointer */
 
 typedef elm_gudang* adr_gudang;
 typedef elm_barang* adr_barang;
 typedef elm_relasi* adr_relasi;
 
-/* LIST */
+/* list */
 
 struct list_gudang {
     adr_gudang first;
@@ -54,7 +56,7 @@ struct list_barang {
     adr_barang first;
 };
 
-/* PROTOTYPE */
+/* func n procedure */
 
 void createListGudang(list_gudang &LG);
 void createListBarang(list_barang &LB);
@@ -70,6 +72,9 @@ void insertRelasi(list_gudang &LG, string idGudang, adr_barang B);
 adr_gudang searchGudang(list_gudang LG, string idGudang);
 adr_barang searchBarangByID(list_barang LB, string idBarang);
 adr_barang searchBarangByNama(list_barang LB, string namaBarang);
+
+void editGudang(list_gudang &LG, string idGudang);
+void editBarang(list_barang &LB, string idBarang);
 
 void deleteGudang(list_gudang &LG, string idGudang);
 void deleteBarang(list_barang &LB, string idBarang);
