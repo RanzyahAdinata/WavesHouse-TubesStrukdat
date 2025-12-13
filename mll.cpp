@@ -82,6 +82,11 @@ void editBarang(list_barang &LB, string idBarang) {
     // F.S : Data barang diperbarui
 }
 
+void editRelasi(list_gudang &LG, string idGudangLama, string idGudangBaru,string idBarang) {
+    // I.S : Relasi gudang lama–barang mungkin ada
+    // F.S : Relasi gudang lama terhapus dan relasi baru terbentuk
+}
+
 /* hapus data gudang, barang, ato relasi dari list*/
 void deleteGudang(list_gudang &LG, string idGudang) {
     // I.S : List gudang mungkin kosong
