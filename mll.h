@@ -6,7 +6,6 @@
 using namespace std;
 
 /* infotypenya */
-
 struct infotype_gudang {
     string id_gudang;
     string nama_gudang;
@@ -21,7 +20,6 @@ struct infotype_barang {
 };
 
 /* elemen */
-
 struct elm_relasi;
 
 struct elm_gudang {
@@ -41,13 +39,11 @@ struct elm_relasi {
 };
 
 /* pointer */
-
 typedef elm_gudang* adr_gudang;
 typedef elm_barang* adr_barang;
 typedef elm_relasi* adr_relasi;
 
-/* LIST */
-
+/* list gudang n barang */
 struct list_gudang {
     adr_gudang first;
 };
@@ -57,7 +53,6 @@ struct list_barang {
 };
 
 /* semua func n proced */
-
 void createListGudang(list_gudang &LG);
 void createListBarang(list_barang &LB);
 
