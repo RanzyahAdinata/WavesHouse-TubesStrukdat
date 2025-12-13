@@ -1,87 +1,136 @@
-#ifndef MLL_H_INCLUDED
-#define MLL_H_INCLUDED
-
 #include <iostream>
-#include <string>
+#include "mll.h"
+
 using namespace std;
 
-/* INFOTYPE */
+/* create list gudang n barang */
+void createListGudang(list_gudang &LG) {
+    LG.first = NULL;
+}
 
-struct infotype_gudang {
-    string id_gudang;
-    string nama_gudang;
-};
+void createListBarang(list_barang &LB) {
+    LB.first = NULL;
+}
 
-struct infotype_barang {
-    string id_barang;
-    string nama_barang;
-    int kuantitas;
-    string jenis_komoditas;
-    string kondisi;
-};
+/* alokasi infotype ke list */
+adr_gudang alokasiGudang(infotype_gudang x) {
+    adr_gudang G = new elm_gudang;
+    G->info = x;
+    G->next = NULL;
+    G->firstRelasi = NULL;
+    return G;
+}
 
-/* ELEMEN */
+adr_barang alokasiBarang(infotype_barang x) {
+    adr_barang B = new elm_barang;
+    B->info = x;
+    B->next = NULL;
+    return B;
+}
 
-struct elm_gudang {
-    infotype_gudang info;
-    elm_gudang *next;
-    struct elm_relasi *firstRelasi;
-};
+adr_relasi alokasiRelasi(adr_barang B) {
+    adr_relasi R = new elm_relasi;
+    R->barang = B;
+    R->next = NULL;
+    return R;
+}
 
-struct elm_barang {
-    infotype_barang info;
-    elm_barang *next;
-};
+/* tambah gudang, barang dan relasi baru ke list */
+void insertGudang(list_gudang &LG, adr_gudang G) {
+    G->next = LG.first;
+    LG.first = G;
+}
 
-struct elm_relasi {
-    elm_barang *barang;
-    elm_relasi *next;
-};
+void insertBarang(list_barang &LB, adr_barang B) {
+    B->next = LB.first;
+    LB.first = B;
+}
 
-/* POINTER */
+void insertRelasi(list_gudang &LG, string idGudang, adr_barang B) {
+    adr_gudang G = searchGudang(LG, idGudang);
+    if (G != NULL) {
+        adr_relasi R = alokasiRelasi(B);
+        R->next = G->firstRelasi;
+        G->firstRelasi = R;
+    }
+}
 
-typedef elm_gudang* adr_gudang;
-typedef elm_barang* adr_barang;
-typedef elm_relasi* adr_relasi;
+/* search */
+adr_gudang searchGudang(list_gudang LG, string idGudang) {
+    // I.S : List gudang tersedia
+    // F.S : Alamat gudang dikembalikan jika ada, NULL jika tidak
+}
 
-/* LIST */
+adr_barang searchBarangByID(list_barang LB, string idBarang) {
+    // I.S : List barang tersedia
+    // F.S : Alamat barang dikembalikan sesuai ID
+}
 
-struct list_gudang {
-    adr_gudang first;
-};
+adr_barang searchBarangByNama(list_barang LB, string namaBarang) {
+    // I.S : List barang tersedia
+    // F.S : Alamat barang dikembalikan sesuai nama
+}
 
-struct list_barang {
-    adr_barang first;
-};
+/* edit / update data gudang or barang or relasi di list */
+void editGudang(list_gudang &LG, string idGudang) {
+    // I.S : Gudang dengan ID tertentu mungkin ada
+    // F.S : Data gudang diperbarui
+}
 
-/* PROTOTYPE */
+void editBarang(list_barang &LB, string idBarang) {
+    // I.S : Barang dengan ID tertentu mungkin ada
+    // F.S : Data barang diperbarui
+}
 
-void createListGudang(list_gudang &LG);
-void createListBarang(list_barang &LB);
+/* hapus data gudang, barang, ato relasi dari list*/
+void deleteGudang(list_gudang &LG, string idGudang) {
+    // I.S : List gudang mungkin kosong
+    // F.S : Gudang dengan ID tertentu terhapus
+}
 
-adr_gudang alokasiGudang(infotype_gudang x);
-adr_barang alokasiBarang(infotype_barang x);
-adr_relasi alokasiRelasi(adr_barang B);
+void deleteBarang(list_barang &LB, string idBarang) {
+    // I.S : List barang mungkin kosong
+    // F.S : Barang dengan ID tertentu terhapus
+}
 
-void insertGudang(list_gudang &LG, adr_gudang G);
-void insertBarang(list_barang &LB, adr_barang B);
-void insertRelasi(list_gudang &LG, string idGudang, adr_barang B);
+void deleteRelasi(list_gudang &LG, string idGudang, string idBarang) {
+    // I.S : Relasi mungkin ada
+    // F.S : Relasi gudang–barang terhapus
+}
 
-adr_gudang searchGudang(list_gudang LG, string idGudang);
-adr_barang searchBarangByID(list_barang LB, string idBarang);
-adr_barang searchBarangByNama(list_barang LB, string namaBarang);
+/* tampilin data gudang, barang, atau barang di gudang yang available */
+void showGudang(list_gudang LG) {
+    // I.S : List gudang tersedia
+    // F.S : Seluruh data gudang ditampilkan
+}
 
-void deleteGudang(list_gudang &LG, string idGudang);
-void deleteBarang(list_barang &LB, string idBarang);
-void deleteRelasi(list_gudang &LG, string idGudang, string idBarang);
+void showBarang(list_barang LB) {
+    // I.S : List barang tersedia
+    // F.S : Seluruh data barang ditampilkan
+}
 
-void showGudang(list_gudang LG);
-void showBarang(list_barang LB);
-void showBarangGudang(list_gudang LG, string idGudang);
+void showBarangGudang(list_gudang LG, string idGudang) {
+    // I.S : Gudang tersedia
+    // F.S : Barang pada gudang ditampilkan
+}
 
-int hitungTotalBarangPerKomoditas(list_barang LB, string komoditas);
-void tampilBarangRusak(list_barang LB);
-adr_barang stokTerbanyak(list_barang LB);
-adr_barang stokTersedikit(list_barang LB);
+/* fitur gimmick */
+int hitungTotalBarangPerKomoditas(list_barang LB, string komoditas) {
+    // I.S : List barang tersedia
+    // F.S : Total kuantitas per komoditas dikembalikan
+}
 
-#endif
+void tampilBarangRusak(list_barang LB) {
+    // I.S : List barang tersedia
+    // F.S : Barang dengan kondisi rusak ditampilkan
+}
+
+adr_barang stokTerbanyak(list_barang LB) {
+    // I.S : List barang tidak kosong
+    // F.S : Alamat barang dengan stok terbesar dikembalikan
+}
+
+adr_barang stokTersedikit(list_barang LB) {
+    // I.S : List barang tidak kosong
+    // F.S : Alamat barang dengan stok terkecil dikembalikan
+}
