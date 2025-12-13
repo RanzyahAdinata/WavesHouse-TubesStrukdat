@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-/* infotype gudang dan barang */
+/* infotypenya */
 
 struct infotype_gudang {
     string id_gudang;
@@ -46,7 +46,7 @@ typedef elm_gudang* adr_gudang;
 typedef elm_barang* adr_barang;
 typedef elm_relasi* adr_relasi;
 
-/* list */
+/* LIST */
 
 struct list_gudang {
     adr_gudang first;
@@ -56,7 +56,7 @@ struct list_barang {
     adr_barang first;
 };
 
-/* func n procedure */
+/* semua func n proced */
 
 void createListGudang(list_gudang &LG);
 void createListBarang(list_barang &LB);
@@ -75,6 +75,7 @@ adr_barang searchBarangByNama(list_barang LB, string namaBarang);
 
 void editGudang(list_gudang &LG, string idGudang);
 void editBarang(list_barang &LB, string idBarang);
+void editRelasi(list_gudang &LG, string idGudangLama, string idGudangBaru, string idBarang);
 
 void deleteGudang(list_gudang &LG, string idGudang);
 void deleteBarang(list_barang &LB, string idBarang);
