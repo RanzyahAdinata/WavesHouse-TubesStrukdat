@@ -5,33 +5,33 @@ using namespace std;
 
 /* create list gudang n barang */
 void createListGudang(list_gudang &LG) {
-    LG.first = NULL;
+    LG.first = nullptr;
 }
 
 void createListBarang(list_barang &LB) {
-    LB.first = NULL;
+    LB.first = nullptr;
 }
 
 /* alokasi infotype ke list */
 adr_gudang alokasiGudang(infotype_gudang x) {
     adr_gudang G = new elm_gudang;
     G->info = x;
-    G->next = NULL;
-    G->firstRelasi = NULL;
+    G->next = nullptr;
+    G->firstRelasi = nullptr;
     return G;
 }
 
 adr_barang alokasiBarang(infotype_barang x) {
     adr_barang B = new elm_barang;
     B->info = x;
-    B->next = NULL;
+    B->next = nullptr;
     return B;
 }
 
 adr_relasi alokasiRelasi(adr_barang B) {
     adr_relasi R = new elm_relasi;
     R->barang = B;
-    R->next = NULL;
+    R->next = nullptr;
     return R;
 }
 
@@ -48,7 +48,7 @@ void insertBarang(list_barang &LB, adr_barang B) {
 
 void insertRelasi(list_gudang &LG, string idGudang, adr_barang B) {
     adr_gudang G = searchGudang(LG, idGudang);
-    if (G != NULL) {
+    if (G != nullptr) {
         adr_relasi R = alokasiRelasi(B);
         R->next = G->firstRelasi;
         G->firstRelasi = R;
