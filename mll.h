@@ -62,22 +62,28 @@ void insertBarangKeGudang(list_gudang &LG, string idGudang, adr_barang B);
 void deleteGudang(list_gudang &LG, string idGudang);
 void deleteBarang(list_gudang &LG, string idGudang, string idBarang);
 
+bool cekgudangnull(adr_gudang x);
+bool cekbarangnull(adr_barang x);
 adr_gudang searchGudang(list_gudang LG, string idGudang);
 adr_barang searchBarang(adr_gudang G, string idBarang);
 
 void showSemuaGudang(list_gudang LG);
 void showBarangGudang(list_gudang LG, string idGudang);
 void showSemuaBarangUnik(list_gudang LG);
+void showbarangtertentu(adr_barang q);
 
 /* FITUR : hitung stok nya */
 
 adr_barang stokTerbanyak(list_gudang LG);
+adr_barang stokTerbanyakPergudang(list_gudang LG, adr_gudang z);
 adr_barang stokTersedikit(list_gudang LG);
+adr_barang stokTersedikitPergudang(list_gudang LG, adr_gudang z);
 int hitungTotalStokGudang(list_gudang LG, string idGudang);
-int hitungStokBarangTertentu(list_gudang LG, string idGudang, string namaBarang);
+int hitungStokBarangTertentu(list_gudang LG, string idGudang, string idBarang);
 
 /* FITUR : cari barang spesifik */
 
 void cariBarangRusak(list_gudang LG);
 
+void ui();
 #endif
