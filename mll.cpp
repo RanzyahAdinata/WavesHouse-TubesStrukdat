@@ -3,7 +3,7 @@
 
 using namespace std;
 
-/* create list gudang n barang */
+/* CREATE list gudang n barang , kemudian allocate ke list*/
 void createListGudang(list_gudang &LG) {
     LG.first = nullptr;
 }
@@ -12,15 +12,11 @@ void createListBarang(list_barang &LB) {
     LB.first = nullptr;
 }
 
-void createListRelasi(list_relasi &LR) {
-    LR.first = nullptr;
-}
-
-/* alokasi infotype ke list */
 adr_gudang alokasiGudang(infotype_gudang x) {
     adr_gudang G = new elm_gudang;
     G->info = x;
     G->next = nullptr;
+    G->firstChild = nullptr;
     return G;
 }
 
@@ -31,112 +27,80 @@ adr_barang alokasiBarang(infotype_barang x) {
     return B;
 }
 
-adr_relasi alokasiRelasi(adr_gudang G, adr_barang B) {
-    adr_relasi R = new elm_relasi;
-    R->gudang = G;
-    R->barang = B;
-    R->next = nullptr;
-    return R;
-}
-
-/* tambah gudang, barang dan relasi baru ke list */
+/* CRUD disini */
 void insertGudang(list_gudang &LG, adr_gudang G) {
     G->next = LG.first;
     LG.first = G;
 }
 
-void insertBarang(list_barang &LB, adr_barang B) {
-    B->next = LB.first;
-    LB.first = B;
+void insertBarangKeGudang(list_gudang &LG, string idGudang, adr_barang B) {
+    adr_gudang G = searchGudang(LG, idGudang);
+    if (G != nullptr) {
+        B->next = G->firstChild;
+        G->firstChild = B;
+    }
 }
 
-void insertRelasi(list_relasi &LR, adr_gudang G, adr_barang B) {
-    adr_relasi R = alokasiRelasi(G, B);
-    R->next = LR.first;
-    LR.first = R;
-}
-
-/* search */
 adr_gudang searchGudang(list_gudang LG, string idGudang) {
-    // I.S : List gudang tersedia
-    // F.S : Alamat gudang ditemukan atau nullptr
+    /* I.S : List gudang berisi data */
+    /* F.S : Alamat gudang dikembalikan atau NULL */
+    return nullptr;
 }
 
-adr_barang searchBarangByID(list_barang LB, string idBarang) {
-    // I.S : List barang tersedia
-    // F.S : Alamat barang ditemukan atau nullptr
+adr_barang searchBarang(adr_gudang G, string idBarang) {
+    /* I.S : Gudang memiliki list barang */
+    /* F.S : Alamat barang dikembalikan atau NULL */
+    return nullptr;
 }
 
-adr_barang searchBarangByNama(list_barang LB, string namaBarang) {
-    // I.S : List barang tersedia
-    // F.S : Alamat barang ditemukan atau nullptr
+void deleteBarang(list_gudang &LG, string idGudang, string idBarang) {
+    /* I.S : Barang mungkin ada di gudang */
+    /* F.S : Barang dihapus dari gudang */
 }
 
-/* edit / update data gudang or barang or relasi di list */
-void editGudang(list_gudang &LG, string idGudang) {
-    // I.S : Gudang mungkin ada
-    // F.S : Data gudang diperbarui
-}
-
-void editBarang(list_barang &LB, string idBarang) {
-    // I.S : Barang mungkin ada
-    // F.S : Data barang diperbarui
-}
-
-void editRelasi(list_relasi &LR, list_gudang LG, string idGudangLama, string idGudangBaru, string idBarang) {
-    // I.S : Relasi lama mungkin ada
-    // F.S : Relasi menunjuk gudang baru
-}
-
-/* hapus data gudang, barang, ato relasi dari list*/
 void deleteGudang(list_gudang &LG, string idGudang) {
-    // I.S : List gudang mungkin kosong
-    // F.S : Gudang terhapus dari list
+    /* I.S : Gudang mungkin ada di list */
+    /* F.S : Gudang dihapus dari list */
 }
 
-void deleteBarang(list_barang &LB, string idBarang) {
-    // I.S : List barang mungkin kosong
-    // F.S : Barang terhapus dari list
+void showSemuaGudang(list_gudang LG) {
+    /* I.S : List gudang berisi data */
+    /* F.S : Data gudang ditampilkan */
 }
 
-void deleteRelasi(list_relasi &LR, string idGudang, string idBarang) {
-    // I.S : Relasi mungkin ada
-    // F.S : Relasi terhapus dari list
+void showBarangGudang(list_gudang LG, string idGudang) {
+    /* I.S : Gudang memiliki barang */
+    /* F.S : Barang gudang ditampilkan */
 }
 
-/* tampilin data gudang, barang, atau barang di gudang yang available */
-void showGudang(list_gudang LG) {
-    // I.S : List gudang tersedia
-    // F.S : Data gudang ditampilkan
+void showSemuaBarangUnik(list_gudang LG) {
+    /* I.S : List gudang dan barang berisi data */
+    /* F.S : Seluruh barang ditampilkan */
 }
 
-void showBarang(list_barang LB) {
-    // I.S : List barang tersedia
-    // F.S : Data barang ditampilkan
+/* FITUR : hitung stok nya */
+adr_barang stokTerbanyak(list_gudang LG) {
+    /* I.S : List gudang dan barang berisi data */
+    /* F.S : Barang dengan stok terbanyak dikembalikan */
 }
 
-void showBarangGudang(list_relasi LR, string idGudang) {
-    // I.S : List relasi tersedia
-    // F.S : Barang pada gudang ditampilkan
+adr_barang stokTersedikit(list_gudang LG) {
+    /* I.S : List gudang dan barang berisi data */
+    /* F.S : Barang dengan stok tersedikit dikembalikan */
 }
 
-/* fitur gimmick */
-int hitungTotalBarangPerKomoditas(list_barang LB, string komoditas) {
-    // I.S : List barang tersedia
-    // F.S : Total kuantitas barang dikembalikan
+int hitungTotalStokGudang(list_gudang LG, string idGudang) {
+    /* I.S : Gudang memiliki barang */
+    /* F.S : Total stok gudang dikembalikan */
 }
 
-void tampilBarangRusak(list_barang LB) {
-    // I.S : List barang tersedia
-    // F.S : Barang rusak ditampilkan
+int hitungStokBarangTertentu(list_gudang LG, string idGudang, string namaBarang) {
+    /* I.S : Gudang dan nama barang diketahui */
+    /* F.S : Total stok barang tertentu dikembalikan */
 }
 
-adr_barang stokTerbanyak(list_barang LB) {
-    // I.S : List barang tidak kosong
-    // F.S : Barang dengan stok terbesar dikembalikan
-}
-
-adr_barang stokTersedikit(list_barang LB) {
-    // I.S : List barang tidak kosong
-    // F.S : Barang dengan stok terkecil dikembalikan
+/* FITUR : cari barang spesifik */
+void cariBarangRusak(list_gudang LG) {
+    /* I.S : List gudang dan barang berisi data */
+    /* F.S : Barang rusak ditampilkan */
 }
