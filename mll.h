@@ -5,11 +5,7 @@
 #include <string>
 using namespace std;
 
-/* infotype gudang n barang */
-struct infotype_gudang {
-    string id_gudang;
-    string nama_gudang;
-};
+/* INFOTYPE gudang n barang*/
 
 struct infotype_barang {
     string id_barang;
@@ -19,74 +15,69 @@ struct infotype_barang {
     string kondisi;
 };
 
-/* elemen */
-struct elm_gudang {
-    infotype_gudang info;
-    elm_gudang *next;
+struct infotype_gudang {
+    string id_gudang;
+    string nama_gudang;
 };
+
+/* ELEMEN gudang n barang */
 
 struct elm_barang {
     infotype_barang info;
     elm_barang *next;
 };
 
-struct elm_relasi {
-    elm_gudang *gudang;
-    elm_barang *barang;
-    elm_relasi *next;
+struct elm_gudang {
+    infotype_gudang info;
+    elm_gudang *next;
+    elm_barang *firstChild;   // pointer ke list barang
 };
 
-/* pointer */
-typedef elm_gudang* adr_gudang;
+/*  POINTER gudang n barang */
+
 typedef elm_barang* adr_barang;
-typedef elm_relasi* adr_relasi;
+typedef elm_gudang* adr_gudang;
 
-/* list */
-struct list_gudang {
-    adr_gudang first;
-};
+/* LIST gudang n barang */
 
 struct list_barang {
     adr_barang first;
 };
 
-struct list_relasi {
-    adr_relasi first;
+struct list_gudang {
+    adr_gudang first;
 };
 
-/* semua func n proced */
+/* CRUD disini */
+
 void createListGudang(list_gudang &LG);
 void createListBarang(list_barang &LB);
-void createListRelasi(list_relasi &LR);
 
 adr_gudang alokasiGudang(infotype_gudang x);
 adr_barang alokasiBarang(infotype_barang x);
-adr_relasi alokasiRelasi(adr_gudang G, adr_barang B);
 
 void insertGudang(list_gudang &LG, adr_gudang G);
-void insertBarang(list_barang &LB, adr_barang B);
-void insertRelasi(list_relasi &LR, adr_gudang G, adr_barang B);
-
-adr_gudang searchGudang(list_gudang LG, string idGudang);
-adr_barang searchBarangByID(list_barang LB, string idBarang);
-adr_barang searchBarangByNama(list_barang LB, string namaBarang);
-adr_relasi searchRelasi(list_relasi LR, string idGudang, string idBarang);
-
-void editGudang(list_gudang &LG, string idGudang);
-void editBarang(list_barang &LB, string idBarang);
-void editRelasi(list_relasi &LR, list_gudang LG, string idGudangLama,string idGudangBaru,string idBarang);
+void insertBarangKeGudang(list_gudang &LG, string idGudang, adr_barang B);
 
 void deleteGudang(list_gudang &LG, string idGudang);
-void deleteBarang(list_barang &LB, string idBarang);
-void deleteRelasi(list_relasi &LR, string idGudang, string idBarang);
+void deleteBarang(list_gudang &LG, string idGudang, string idBarang);
 
-void showGudang(list_gudang LG);
-void showBarang(list_barang LB);
-void showBarangGudang(list_relasi LR, string idGudang);
+adr_gudang searchGudang(list_gudang LG, string idGudang);
+adr_barang searchBarang(adr_gudang G, string idBarang);
 
-int hitungTotalBarangPerKomoditas(list_barang LB, string komoditas);
-void tampilBarangRusak(list_barang LB);
-adr_barang stokTerbanyak(list_barang LB);
-adr_barang stokTersedikit(list_barang LB);
+void showSemuaGudang(list_gudang LG);
+void showBarangGudang(list_gudang LG, string idGudang);
+void showSemuaBarangUnik(list_gudang LG);
+
+/* FITUR : hitung stok nya */
+
+adr_barang stokTerbanyak(list_gudang LG);
+adr_barang stokTersedikit(list_gudang LG);
+int hitungTotalStokGudang(list_gudang LG, string idGudang);
+int hitungStokBarangTertentu(list_gudang LG, string idGudang, string namaBarang);
+
+/* FITUR : cari barang spesifik */
+
+void cariBarangRusak(list_gudang LG);
 
 #endif
