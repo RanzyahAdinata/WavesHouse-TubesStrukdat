@@ -1,6 +1,9 @@
 #ifndef MLL_H_INCLUDED
 #define MLL_H_INCLUDED
 
+#ifndef MLL_H
+#define MLL_H
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -85,5 +88,7 @@ int hitungStokBarangTertentu(list_gudang LG, string idGudang, string idBarang);
 
 void cariBarangRusak(list_gudang LG);
 
+/*FITUR : MENU*/
 void ui();
 #endif
+
