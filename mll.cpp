@@ -1,6 +1,7 @@
 #include <iostream>
 #include "mll.h"
-
+#include <cstdlib>
+#include <limits>
 
 using namespace std;
 
@@ -308,18 +309,25 @@ void showbarangtertentu(adr_barang q){
     cout << "Jenis Komoditas: " << q->info.jenis_komoditas << endl;
     cout << "Kondisi: " << q->info.kondisi << endl << endl;
 }
-void ui(){
-    cout << "1.  Input Gudang" << endl;
-    cout << "2.  Input Barang" << endl;
-    cout << "3.  Hapus Gudang" << endl;
-    cout << "4.  Hapus Barang" << endl;
-    cout << "5.  Tampilkan Semua Gudang" << endl;
-    cout << "6.  Tampilkan Barang di Gudang" << endl;
-    cout << "7.  Tampilkan Semua Barang" << endl;
-    cout << "8.  Stok Terbanyak" << endl;
-    cout << "9.  Stok Tersedikit" << endl;
-    cout << "10. Total Stok" << endl;
-    cout << "11. Total Stok Barang Tertentu" << endl;
-    cout << "12. Cari Barang Yang Rusak" << endl;
-    cout << "0.  Exit" << endl;
+
+void ui() {
+    cout << "=================================================\n";
+    cout << "🏭  WELCOME TO WAVESHOUSE\n";
+    cout << "📦  Warehouse & Inventory Management System\n";
+    cout << "=================================================\n";
+    cout << "1.  ➕ Tambah Gudang\n";
+    cout << "2.  📦 Tambah Barang ke Gudang\n";
+    cout << "3.  🗑️  Hapus Gudang\n";
+    cout << "4.  ❌ Hapus Barang dari Gudang\n";
+    cout << "5.  📋 Tampilkan Semua Gudang\n";
+    cout << "6.  🏭 Tampilkan Barang per Gudang\n";
+    cout << "7.  📦 Tampilkan Semua Barang Unik\n";
+    cout << "8.  📈 Stok Terbanyak\n";
+    cout << "9.  📉 Stok Tersedikit\n";
+    cout << "10. 📊 Total Stok Gudang\n";
+    cout << "11. 📦 Total Stok Barang Tertentu\n";
+    cout << "12. 🚨 Cari Barang Rusak\n";
+    cout << "0.  🚪 Keluar\n";
+    cout << "-------------------------------------------------\n";
 }
+
