@@ -2,6 +2,8 @@
 #include "mll.h"
 #include <cstdlib>
 #include <limits>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
@@ -302,32 +304,37 @@ void cariBarangRusak(list_gudang LG) {
         }
     }
 }
+
 void showbarangtertentu(adr_barang q){
-    cout << "ID Barang: " << q->info.id_barang << endl;
-    cout << "Nama Barang: " << q->info.nama_barang << endl;
-    cout << "Kuantitas: " << q->info.kuantitas << endl;
-    cout << "Jenis Komoditas: " << q->info.jenis_komoditas << endl;
-    cout << "Kondisi: " << q->info.kondisi << endl << endl;
+    cout << "────────────────────────────\n";
+    cout << "🆔 ID Barang   : " << q->info.id_barang << endl;
+    cout << "📦 Nama        : " << q->info.nama_barang << endl;
+    cout << "🔢 Kuantitas   : " << q->info.kuantitas << endl;
+    cout << "🏷 Jenis       : " << q->info.jenis_komoditas << endl;
+    cout << "⚠ Kondisi     : " << q->info.kondisi << endl;
+    cout << "────────────────────────────\n\n";
 }
 
+
 void ui() {
-    cout << "=================================================\n";
-    cout << "🏭  WELCOME TO WAVESHOUSE\n";
-    cout << "📦  Warehouse & Inventory Management System\n";
-    cout << "=================================================\n";
+    cout << endl;
+    cout << "╔════════════════════════════════════╗\n";
+    cout << "║   🏭 WAVESHOUSE INVENTORY SYSTEM   ║\n";
+    cout << "╚════════════════════════════════════╝\n";
     cout << "1.  ➕ Tambah Gudang\n";
     cout << "2.  📦 Tambah Barang ke Gudang\n";
-    cout << "3.  🗑️  Hapus Gudang\n";
-    cout << "4.  ❌ Hapus Barang dari Gudang\n";
-    cout << "5.  📋 Tampilkan Semua Gudang\n";
-    cout << "6.  🏭 Tampilkan Barang per Gudang\n";
-    cout << "7.  📦 Tampilkan Semua Barang Unik\n";
+    cout << "3.  🗑 Hapus Gudang\n";
+    cout << "4.  ❌ Hapus Barang\n";
+    cout << "5.  📋 Semua Gudang\n";
+    cout << "6.  🏭 Barang per Gudang\n";
+    cout << "7.  📦 Semua Barang\n";
     cout << "8.  📈 Stok Terbanyak\n";
     cout << "9.  📉 Stok Tersedikit\n";
     cout << "10. 📊 Total Stok Gudang\n";
-    cout << "11. 📦 Total Stok Barang Tertentu\n";
-    cout << "12. 🚨 Cari Barang Rusak\n";
+    cout << "11. 📦 Stok Barang Tertentu\n";
+    cout << "12. 🚨 Barang Rusak\n";
     cout << "0.  🚪 Keluar\n";
-    cout << "-------------------------------------------------\n";
+    cout << "────────────────────────────────────\n";
 }
+
 
