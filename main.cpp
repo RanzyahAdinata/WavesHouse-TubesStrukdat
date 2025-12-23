@@ -1,11 +1,40 @@
 #include <iostream>
 #include <cstdlib>
+#include <thread>
+#include <chrono>
 #include "mll.h"
 
 using namespace std;
 
-int main()
-{
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void pause(int ms = 600) {
+    this_thread::sleep_for(chrono::milliseconds(ms));
+}
+
+void typeEffect(const string &text, int speed = 10) {
+    for (char c : text) {
+        cout << c << flush;
+        this_thread::sleep_for(chrono::milliseconds(speed));
+    }
+}
+
+void loading(const string &text) {
+    cout << text;
+    for (int i = 0; i < 3; i++) {
+        cout << "." << flush;
+        pause(300);
+    }
+    cout << endl;
+}
+
+int main() {
     list_gudang LG;
     list_barang LB;
     adr_gudang g;
@@ -19,155 +48,109 @@ int main()
     createListBarang(LB);
 
     while (masukan != "0") {
+        clearScreen();
         ui();
-        cout << "Pilih Menu: ";
+        cout << "➜ Pilih Menu : ";
         cin >> masukan;
 
+        clearScreen();
+
         if (masukan == "1") {
-            system("clear");
+            typeEffect("➕ Menambah Gudang\n");
+            cout << "ID Gudang   : "; cin >> gudang.id_gudang;
+            cout << "Nama Gudang : "; cin >> gudang.nama_gudang;
             g = alokasiGudang(gudang);
-            cout << "ID Gudang: ";
-            cin >> g->info.id_gudang;
-            cout << "Nama Gudang: ";
-            cin >> g->info.nama_gudang;
             insertGudang(LG, g);
-            system("clear");
+            loading("✔ Gudang berhasil ditambahkan");
         }
         else if (masukan == "2") {
-            system("clear");
-            cout << "Masukkan ID Gudang nya: ";
-            cin >> idGudang;
+            typeEffect("📦 Menambah Barang ke Gudang\n");
+            cout << "ID Gudang        : "; cin >> idGudang;
+            cout << "ID Barang        : "; cin >> barang.id_barang;
+            cout << "Nama Barang      : "; cin >> barang.nama_barang;
+            cout << "Kuantitas        : "; cin >> barang.kuantitas;
+            cout << "Jenis Komoditas  : "; cin >> barang.jenis_komoditas;
+            cout << "Kondisi          : "; cin >> barang.kondisi;
             b = alokasiBarang(barang);
-            cout << "ID Barang: ";
-            cin >> b->info.id_barang;
-            cout << "Nama Barang: ";
-            cin >> b->info.nama_barang;
-            cout << "Kuantitas: ";
-            cin >> b->info.kuantitas;
-            cout << "Jenis Komoditas: ";
-            cin >> b->info.jenis_komoditas;
-            cout << "Kondisi: ";
-            cin >> b->info.kondisi;
-            g = searchGudang(LG, idGudang);
             insertBarangKeGudang(LG, idGudang, b);
-            system("clear");
+            loading("✔ Barang berhasil ditambahkan");
         }
         else if (masukan == "3") {
-            system("cls");
-            cout << "Masukkan ID Gudang yang ingin dihapus: ";
-            cin >> idGudang;
+            typeEffect("🗑 Menghapus Gudang\n");
+            cout << "ID Gudang : "; cin >> idGudang;
             deleteGudang(LG, idGudang);
-            system("clear");
+            pause();
         }
         else if (masukan == "4") {
-            system("clear");
-            cout << "Masukkan ID Gudang yang ingin dihapus: ";
-            cin >> idGudang;
-            cout << "Masukkan ID Barang yang ingin dihapus: ";
-            cin >> idBarang;
+            typeEffect("❌ Menghapus Barang\n");
+            cout << "ID Gudang : "; cin >> idGudang;
+            cout << "ID Barang : "; cin >> idBarang;
             deleteBarang(LG, idGudang, idBarang);
-            system("clear");
+            pause();
         }
         else if (masukan == "5") {
-            system("clear");
+            typeEffect("📋 Daftar Semua Gudang\n\n");
             showSemuaGudang(LG);
+            pause(1200);
         }
         else if (masukan == "6") {
-            system("clear");
-            cout << "Masukkan ID Gudang yang ingin dilihat barangnya: ";
-            cin >> idGudang;
+            cout << "ID Gudang : "; cin >> idGudang;
             showBarangGudang(LG, idGudang);
+            pause(1200);
         }
         else if (masukan == "7") {
-            system("clear");
-            cout << "Data Semua Barang" << endl << endl;
+            typeEffect("📦 Semua Barang Unik\n\n");
             showSemuaBarangUnik(LG);
+            pause(1200);
         }
         else if (masukan == "8") {
-            system("clear");
-            cout << "a. Stok terbanyak dari seluruh gudang" << endl;
-            cout << "b. Stok terbanyak dari gudang tertentu" << endl;
-            cout << "Pilih (a/b): ";
+            cout << "[a] Seluruh Gudang\n[b] Gudang Tertentu\n➜ ";
             cin >> choice;
-
             if (choice == "a") {
                 b = stokTerbanyak(LG);
-                if (cekbarangnull(b)) {
-                    cout << "Data Barang Kosong" << endl;
-                } else {
-                    showbarangtertentu(b);
-                }
-            }
-            else if (choice == "b") {
-                cout << "Masukkan ID Gudang yang ingin dilihat barangnya: ";
-                cin >> idGudang;
+                if (!cekbarangnull(b)) showbarangtertentu(b);
+            } else {
+                cout << "ID Gudang : "; cin >> idGudang;
                 g = searchGudang(LG, idGudang);
-                if (cekgudangnull(g)) {
-                    cout << "Gudang tidak ditemukan" << endl;
-                } else {
-                    b = stokTerbanyakPergudang(LG, g);
-                    showbarangtertentu(b);
-                }
+                if (!cekgudangnull(g))
+                    showbarangtertentu(stokTerbanyakPergudang(LG, g));
             }
+            pause(1200);
         }
         else if (masukan == "9") {
-            system("clear");
-            cout << "a. Stok tersedikit dari seluruh gudang" << endl;
-            cout << "b. Stok tersedikit dari gudang tertentu" << endl;
-            cout << "Pilih (a/b): ";
+            cout << "[a] Seluruh Gudang\n[b] Gudang Tertentu\n➜ ";
             cin >> choice;
-
             if (choice == "a") {
                 b = stokTersedikit(LG);
-                if (cekbarangnull(b)) {
-                    cout << "Data Barang Kosong" << endl;
-                } else {
-                    showbarangtertentu(b);
-                }
-            }
-            else if (choice == "b") {
-                cout << "Masukkan ID Gudang yang ingin dilihat barangnya: ";
-                cin >> idGudang;
+                if (!cekbarangnull(b)) showbarangtertentu(b);
+            } else {
+                cout << "ID Gudang : "; cin >> idGudang;
                 g = searchGudang(LG, idGudang);
-                if (cekgudangnull(g)) {
-                    cout << "Gudang tidak ditemukan" << endl;
-                } else {
-                    b = stokTersedikitPergudang(LG, g);
-                    showbarangtertentu(b);
-                }
+                if (!cekgudangnull(g))
+                    showbarangtertentu(stokTersedikitPergudang(LG, g));
             }
+            pause(1200);
         }
         else if (masukan == "10") {
-            system("clear");
-            if (LG.first == nullptr) {
-                cout << "Data Kosong" << endl;
-            } else {
-                cout << "Masukkan ID Gudang: ";
-                cin >> idGudang;
-                cout << "Total Stok : "
-                     << hitungTotalStokGudang(LG, idGudang) << endl;
-            }
+            cout << "ID Gudang : "; cin >> idGudang;
+            cout << "📊 Total Stok : " << hitungTotalStokGudang(LG, idGudang) << endl;
+            pause();
         }
         else if (masukan == "11") {
-            system("clear");
-            if (LG.first == nullptr) {
-                cout << "Data Kosong" << endl;
-            } else {
-                cout << "Masukkan ID Gudang: ";
-                cin >> idGudang;
-                cout << "Masukkan ID Barang: ";
-                cin >> idBarang;
-                cout << "Total Stok : "
-                     << hitungStokBarangTertentu(LG, idGudang, idBarang) << endl;
-            }
+            cout << "ID Gudang : "; cin >> idGudang;
+            cout << "ID Barang : "; cin >> idBarang;
+            cout << "📦 Total Stok : "
+                 << hitungStokBarangTertentu(LG, idGudang, idBarang) << endl;
+            pause();
         }
         else if (masukan == "12") {
-            system("clear");
+            typeEffect("🚨 Mencari Barang Rusak\n\n");
             cariBarangRusak(LG);
+            pause(1200);
         }
     }
 
-    system("clear");
+    clearScreen();
+    typeEffect("👋 Terima kasih telah menggunakan sistem\n");
     return 0;
 }
-
