@@ -74,47 +74,71 @@ adr_barang searchBarang(adr_gudang G, string idBarang) {
 
 /* DELETE */
 void deleteBarang(list_gudang &LG, string idGudang, string idBarang) {
-    adr_gudang g = searchGudang(LG, idGudang);
-    if (g == nullptr || g->firstChild == nullptr) return;
+    adr_gudang p;
+    adr_barang q, z;
 
-    adr_barang p = g->firstChild;
-    if (p->info.id_barang == idBarang) {
-        g->firstChild = p->next;
-        p->next = nullptr;
-        return;
+    if (LG.first == nullptr) {
+        cout << "Data Gudang kosong" << endl;
     }
-
-    while (p->next != nullptr) {
-        if (p->next->info.id_barang == idBarang) {
-            adr_barang q = p->next;
-            p->next = q->next;
-            q->next = nullptr;
-            return;
+    else {
+        p = searchGudang(LG, idGudang);
+        if (cekgudangnull(p)) {
+            cout << "Data Gudang tidak ditemukan" << endl;
         }
-        p = p->next;
+        else {
+            q = p->firstChild;
+            if (q == nullptr) {
+                cout << "Gudang tidak memiliki barang" << endl;
+            }
+            else {
+                if (q->info.id_barang == idBarang) {
+                    p->firstChild = q->next;
+                    q->next = nullptr;
+                    cout << "Barang berhasil dihapus" << endl;
+                }
+                else {
+                    while (q->next != nullptr) {
+                        if (q->next->info.id_barang == idBarang) {
+                            z = q->next;
+                            q->next = z->next;
+                            z->next = nullptr;
+                            cout << "Barang berhasil dihapus" << endl;
+                            return;
+                        }
+                        q = q->next;
+                    }
+                    cout << "Barang tidak ditemukan" << endl;
+                }
+            }
+        }
     }
 }
 
-void deleteGudang(list_gudang &LG, string idGudang) {
-    if (LG.first == nullptr) return;
 
-    adr_gudang p = LG.first;
-    if (p->info.id_gudang == idGudang) {
-        LG.first = p->next;
+void deleteGudang(list_gudang &LG, string idGudang) {
+    adr_gudang p, q;
+    p = searchGudang(LG, idGudang);
+
+    if (LG.first == nullptr) {
+        cout << "Data Gudang sudah kosong" << endl;
+    }
+    else if (cekgudangnull(p)) {
+        cout << "Data Gudang tidak ditemukan" << endl;
+    }
+    else {
+        if (LG.first == p) {
+            LG.first = p->next;
+        }
+        else {
+            q = LG.first;
+            while (q->next != p) {
+                q = q->next;
+            }
+            q->next = p->next;
+        }
         p->next = nullptr;
         p->firstChild = nullptr;
-        return;
-    }
-
-    while (p->next != nullptr) {
-        if (p->next->info.id_gudang == idGudang) {
-            adr_gudang q = p->next;
-            p->next = q->next;
-            q->next = nullptr;
-            q->firstChild = nullptr;
-            return;
-        }
-        p = p->next;
+        cout << "Gudang berhasil dihapus" << endl;
     }
 }
 
