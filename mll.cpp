@@ -320,10 +320,10 @@ void ui() {
     cout << "16. 🔢 Urutkan Barang per Gudang (Stok Desc)\n";
     cout << "17. 🌐 Urutkan Semua Barang (Stok Asc)\n";
     cout << "18. 🌐 Urutkan Semua Barang (Stok Desc)\n";
-    cout << "19. 🔤 Barang per Gudang (Nama A - Z)\n";
-    cout << "20. 🔤 Barang per Gudang (Nama Z - A)\n";
-    cout << "21. 🌐 Semua Barang (Nama A - Z)\n";
-    cout << "22. 🌐 Semua Barang (Nama Z - A)\n";
+    cout << "19. 🔤 Urutkan Barang per Gudang (Nama A - Z)\n";
+    cout << "20. 🔤 Urutkan Barang per Gudang (Nama Z - A)\n";
+    cout << "21. 🌐 Urutkan Semua Barang (Nama A - Z)\n";
+    cout << "22. 🌐 Urutkan Semua Barang (Nama Z - A)\n";
     cout << "0.  🚪 Keluar\n";
     cout << "────────────────────────────────────\n";
 }
