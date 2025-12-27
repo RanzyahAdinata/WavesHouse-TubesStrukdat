@@ -1,5 +1,5 @@
-#ifndef MLL_H_INCLUDED
-#define MLL_H_INCLUDED
+#ifndef MLL_H
+#define MLL_H
 
 #include <iostream>
 #include <string>
@@ -101,6 +101,12 @@ void cariBarangRusak(list_gudang LG);
 void sortGudangAsc(list_gudang &LG);
 void sortGudangDesc(list_gudang &LG);
 
+/* SORTING BARANG (ALFABET) */
+void sortBarangNamaAsc(adr_gudang G);
+void sortBarangNamaDesc(adr_gudang G);
+void sortBarangNamaAscGlobal(list_gudang &LG);
+void sortBarangNamaDescGlobal(list_gudang &LG);
+
 /* SORTING BARANG PER GUDANG (STOK) */
 
 void sortBarangStokAsc(adr_gudang G);   
@@ -116,6 +122,3 @@ void sortBarangStokDescGlobal(list_gudang &LG);
 void ui();
 
 #endif
-
-
-
