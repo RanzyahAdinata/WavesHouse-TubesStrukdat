@@ -1,10 +1,5 @@
 #include <iostream>
 #include "mll.h"
-#include <cstdlib>
-#include <limits>
-#include <thread>
-#include <chrono>
-
 using namespace std;
 
 /* CREATE */
@@ -67,6 +62,7 @@ adr_gudang searchGudang(list_gudang LG, string idGudang) {
 }
 
 adr_barang searchBarang(adr_gudang G, string idBarang) {
+    if (G == nullptr) return nullptr;
     adr_barang p = G->firstChild;
     while (p != nullptr) {
         if (p->info.id_barang == idBarang)
@@ -124,11 +120,9 @@ void deleteGudang(list_gudang &LG, string idGudang) {
 
 /* SHOW */
 void showSemuaGudang(list_gudang LG) {
-    adr_gudang p = LG.first;
-    while (p != nullptr) {
+    for (adr_gudang p = LG.first; p != nullptr; p = p->next) {
         cout << "ID Gudang   : " << p->info.id_gudang << endl;
         cout << "Nama Gudang : " << p->info.nama_gudang << endl << endl;
-        p = p->next;
     }
 }
 
@@ -136,23 +130,14 @@ void showBarangGudang(list_gudang LG, string idGudang) {
     adr_gudang g = searchGudang(LG, idGudang);
     if (g == nullptr) return;
 
-    adr_barang b = g->firstChild;
-    while (b != nullptr) {
+    for (adr_barang b = g->firstChild; b != nullptr; b = b->next)
         showbarangtertentu(b);
-        b = b->next;
-    }
 }
 
 void showSemuaBarangUnik(list_gudang LG) {
-    adr_gudang g = LG.first;
-    while (g != nullptr) {
-        adr_barang b = g->firstChild;
-        while (b != nullptr) {
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next)
+        for (adr_barang b = g->firstChild; b != nullptr; b = b->next)
             showbarangtertentu(b);
-            b = b->next;
-        }
-        g = g->next;
-    }
 }
 
 /* HITUNG STOK */
@@ -163,7 +148,6 @@ adr_barang stokTerbanyakPergudang(list_gudang, adr_gudang g) {
     for (adr_barang p = g->firstChild; p != nullptr; p = p->next)
         if (p->info.kuantitas > max->info.kuantitas)
             max = p;
-
     return max;
 }
 
@@ -174,7 +158,6 @@ adr_barang stokTersedikitPergudang(list_gudang, adr_gudang g) {
     for (adr_barang p = g->firstChild; p != nullptr; p = p->next)
         if (p->info.kuantitas < min->info.kuantitas)
             min = p;
-
     return min;
 }
 
@@ -182,7 +165,7 @@ adr_barang stokTerbanyak(list_gudang LG) {
     adr_barang max = nullptr;
     for (adr_gudang g = LG.first; g != nullptr; g = g->next) {
         adr_barang x = stokTerbanyakPergudang(LG, g);
-        if (x && (max == nullptr || x->info.kuantitas > max->info.kuantitas))
+        if (x && (!max || x->info.kuantitas > max->info.kuantitas))
             max = x;
     }
     return max;
@@ -192,7 +175,7 @@ adr_barang stokTersedikit(list_gudang LG) {
     adr_barang min = nullptr;
     for (adr_gudang g = LG.first; g != nullptr; g = g->next) {
         adr_barang x = stokTersedikitPergudang(LG, g);
-        if (x && (min == nullptr || x->info.kuantitas < min->info.kuantitas))
+        if (x && (!min || x->info.kuantitas < min->info.kuantitas))
             min = x;
     }
     return min;
@@ -201,6 +184,8 @@ adr_barang stokTersedikit(list_gudang LG) {
 int hitungTotalStokGudang(list_gudang LG, string idGudang) {
     int total = 0;
     adr_gudang g = searchGudang(LG, idGudang);
+    if (!g) return 0;
+
     for (adr_barang b = g->firstChild; b != nullptr; b = b->next)
         total += b->info.kuantitas;
     return total;
@@ -219,7 +204,6 @@ void sortGudangAsc(list_gudang &LG) {
                 swap(i->info, j->info);
                 swap(i->firstChild, j->firstChild);
             }
-    showSemuaGudang(LG);
 }
 
 void sortGudangDesc(list_gudang &LG) {
@@ -229,28 +213,23 @@ void sortGudangDesc(list_gudang &LG) {
                 swap(i->info, j->info);
                 swap(i->firstChild, j->firstChild);
             }
-    showSemuaGudang(LG);
 }
 
-/* SORT BARANG */
+/* SORT BARANG STOK */
 void sortBarangStokAsc(adr_gudang G) {
-    if (G == nullptr) return;
+    if (!G) return;
     for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
         for (adr_barang j = i->next; j != nullptr; j = j->next)
             if (i->info.kuantitas > j->info.kuantitas)
                 swap(i->info, j->info);
-
-    showBarangGudang({G}, G->info.id_gudang);
 }
 
 void sortBarangStokDesc(adr_gudang G) {
-    if (G == nullptr) return;
+    if (!G) return;
     for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
         for (adr_barang j = i->next; j != nullptr; j = j->next)
             if (i->info.kuantitas < j->info.kuantitas)
                 swap(i->info, j->info);
-
-    showBarangGudang({G}, G->info.id_gudang);
 }
 
 void sortBarangStokAscGlobal(list_gudang &LG) {
@@ -263,6 +242,39 @@ void sortBarangStokDescGlobal(list_gudang &LG) {
         sortBarangStokDesc(g);
 }
 
+/* SORT BARANG ALFABET */
+void sortBarangNamaAsc(adr_gudang G) {
+    if (!G) return;
+    for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
+        for (adr_barang j = i->next; j != nullptr; j = j->next)
+            if (i->info.nama_barang > j->info.nama_barang)
+                swap(i->info, j->info);
+}
+
+void sortBarangNamaDesc(adr_gudang G) {
+    if (!G) return;
+    for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
+        for (adr_barang j = i->next; j != nullptr; j = j->next)
+            if (i->info.nama_barang < j->info.nama_barang)
+                swap(i->info, j->info);
+}
+
+void sortBarangNamaAscGlobal(list_gudang &L) {
+    adr_gudang g = L.first;
+    while (g != NULL) {
+        sortBarangNamaAsc(g);
+        g = g->next;
+    }
+}
+
+void sortBarangNamaDescGlobal(list_gudang &L) {
+    adr_gudang g = L.first;
+    while (g != NULL) {
+        sortBarangNamaDesc(g);
+        g = g->next;
+    }
+}
+
 /* BARANG RUSAK */
 void cariBarangRusak(list_gudang LG) {
     for (adr_gudang g = LG.first; g != nullptr; g = g->next)
@@ -272,7 +284,7 @@ void cariBarangRusak(list_gudang LG) {
 }
 
 /* TAMPIL BARANG */
-void showbarangtertentu(adr_barang q){
+void showbarangtertentu(adr_barang q) {
     cout << "────────────────────────────\n";
     cout << "🆔 ID Barang   : " << q->info.id_barang << endl;
     cout << "📦 Nama        : " << q->info.nama_barang << endl;
@@ -303,10 +315,15 @@ void ui() {
     cout << "────────────────────────────────────\n";
     cout << "13. 🔤 Urutkan Gudang (A - Z)\n";
     cout << "14. 🔤 Urutkan Gudang (Z - A)\n";
-    cout << "15. 🔢 Urutkan Barang per Gudang (Asc)\n";
-    cout << "16. 🔢 Urutkan Barang per Gudang (Desc)\n";
-    cout << "17. 🌐 Urutkan Semua Barang (Asc)\n";
-    cout << "18. 🌐 Urutkan Semua Barang (Desc)\n";
+    cout << "────────────────────────────────────\n";
+    cout << "15. 🔢 Urutkan Barang per Gudang (Stok Asc)\n";
+    cout << "16. 🔢 Urutkan Barang per Gudang (Stok Desc)\n";
+    cout << "17. 🌐 Urutkan Semua Barang (Stok Asc)\n";
+    cout << "18. 🌐 Urutkan Semua Barang (Stok Desc)\n";
+    cout << "19. 🔤 Barang per Gudang (Nama A - Z)\n";
+    cout << "20. 🔤 Barang per Gudang (Nama Z - A)\n";
+    cout << "21. 🌐 Semua Barang (Nama A - Z)\n";
+    cout << "22. 🌐 Semua Barang (Nama Z - A)\n";
     cout << "0.  🚪 Keluar\n";
     cout << "────────────────────────────────────\n";
 }
