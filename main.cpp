@@ -39,9 +39,11 @@ int main() {
     list_barang LB;
     adr_gudang g;
     adr_barang b;
-    string idGudang, idBarang;
+
     infotype_barang barang;
     infotype_gudang gudang;
+
+    string idGudang, idBarang;
     string masukan, choice;
 
     createListGudang(LG);
@@ -52,7 +54,6 @@ int main() {
         ui();
         cout << "➜ Pilih Menu : ";
         cin >> masukan;
-
         clearScreen();
 
         if (masukan == "1") {
@@ -99,7 +100,7 @@ int main() {
             pause(1200);
         }
         else if (masukan == "7") {
-            typeEffect("📦 Semua Barang Unik\n\n");
+            typeEffect("📦 Semua Barang\n\n");
             showSemuaBarangUnik(LG);
             pause(1200);
         }
@@ -133,7 +134,8 @@ int main() {
         }
         else if (masukan == "10") {
             cout << "ID Gudang : "; cin >> idGudang;
-            cout << "📊 Total Stok : " << hitungTotalStokGudang(LG, idGudang) << endl;
+            cout << "📊 Total Stok : "
+                 << hitungTotalStokGudang(LG, idGudang) << endl;
             pause();
         }
         else if (masukan == "11") {
@@ -146,6 +148,49 @@ int main() {
         else if (masukan == "12") {
             typeEffect("🚨 Mencari Barang Rusak\n\n");
             cariBarangRusak(LG);
+            pause(1200);
+        }
+
+        else if (masukan == "13") {
+            sortGudangAsc(LG);
+            typeEffect("🔤 Gudang diurutkan A - Z\n\n");
+            showSemuaGudang(LG);
+            pause(1200);
+        }
+        else if (masukan == "14") {
+            sortGudangDesc(LG);
+            typeEffect("🔤 Gudang diurutkan Z - A\n\n");
+            showSemuaGudang(LG);
+            pause(1200);
+        }
+        else if (masukan == "15") {
+            cout << "ID Gudang : "; cin >> idGudang;
+            g = searchGudang(LG, idGudang);
+            if (!cekgudangnull(g)) {
+                sortBarangStokAsc(g);
+                showBarangGudang(LG, idGudang);
+            }
+            pause(1200);
+        }
+        else if (masukan == "16") {
+            cout << "ID Gudang : "; cin >> idGudang;
+            g = searchGudang(LG, idGudang);
+            if (!cekgudangnull(g)) {
+                sortBarangStokDesc(g);
+                showBarangGudang(LG, idGudang);
+            }
+            pause(1200);
+        }
+        else if (masukan == "17") {
+            sortBarangStokAscGlobal(LG);
+            typeEffect("🌐 Semua Barang (Stok ASC)\n\n");
+            showSemuaBarangUnik(LG);
+            pause(1200);
+        }
+        else if (masukan == "18") {
+            sortBarangStokDescGlobal(LG);
+            typeEffect("🌐 Semua Barang (Stok DESC)\n\n");
+            showSemuaBarangUnik(LG);
             pause(1200);
         }
     }
