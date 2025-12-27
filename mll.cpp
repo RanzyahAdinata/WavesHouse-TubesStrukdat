@@ -7,7 +7,7 @@
 
 using namespace std;
 
-/* CREATE list gudang n barang , kemudian allocate ke list*/
+/* CREATE */
 void createListGudang(list_gudang &LG) {
     LG.first = nullptr;
 }
@@ -16,6 +16,7 @@ void createListBarang(list_barang &LB) {
     LB.first = nullptr;
 }
 
+/* ALOKASI */
 adr_gudang alokasiGudang(infotype_gudang x) {
     adr_gudang G = new elm_gudang;
     G->info = x;
@@ -31,7 +32,7 @@ adr_barang alokasiBarang(infotype_barang x) {
     return B;
 }
 
-/* CRUD disini */
+/* INSERT */
 void insertGudang(list_gudang &LG, adr_gudang G) {
     G->next = LG.first;
     LG.first = G;
@@ -45,19 +46,21 @@ void insertBarangKeGudang(list_gudang &LG, string idGudang, adr_barang B) {
     }
 }
 
-bool cekgudangnull(adr_gudang x){
-    return x==nullptr;
-}
-bool cekbarangnull(adr_barang x){
-    return x==nullptr;
+/* CEK */
+bool cekgudangnull(adr_gudang x) {
+    return x == nullptr;
 }
 
+bool cekbarangnull(adr_barang x) {
+    return x == nullptr;
+}
+
+/* SEARCH */
 adr_gudang searchGudang(list_gudang LG, string idGudang) {
     adr_gudang p = LG.first;
-    while(p!=nullptr){
-        if(p->info.id_gudang==idGudang){
+    while (p != nullptr) {
+        if (p->info.id_gudang == idGudang)
             return p;
-        }
         p = p->next;
     }
     return nullptr;
@@ -65,246 +68,210 @@ adr_gudang searchGudang(list_gudang LG, string idGudang) {
 
 adr_barang searchBarang(adr_gudang G, string idBarang) {
     adr_barang p = G->firstChild;
-    while(p!=nullptr){
-        if(p->info.id_barang == idBarang){
+    while (p != nullptr) {
+        if (p->info.id_barang == idBarang)
             return p;
-        }
         p = p->next;
     }
     return nullptr;
 }
 
+/* DELETE */
 void deleteBarang(list_gudang &LG, string idGudang, string idBarang) {
-    adr_gudang p;
-    adr_barang q,z;
-    if (LG.first == nullptr) {
-        cout << "Data Gudang kosong" << endl;
-    }else {
-        p = searchGudang(LG, idGudang);
-        if (cekgudangnull(p)) {
-            cout << "Data tidak ditemukan" << endl;
-        }else {
-            q = p->firstChild;
-            if (q == nullptr) {
-                cout << "Gudang tidak memiliki barang" << endl;
-            }else {
-                if (q->info.id_barang == idBarang) {
-                    p->firstChild = q->next;
-                    q->next = nullptr;
-                }
-                else {
-                    while (q->next != nullptr) {
-                        if (q->next->info.id_barang == idBarang) {
-                            z = q->next;
-                            q->next = z->next;
-                            z->next = nullptr;
-                        }
-                        else {
-                            q = q->next;
-                        }
-                    }
-                }
-            }
+    adr_gudang g = searchGudang(LG, idGudang);
+    if (g == nullptr || g->firstChild == nullptr) return;
+
+    adr_barang p = g->firstChild;
+    if (p->info.id_barang == idBarang) {
+        g->firstChild = p->next;
+        p->next = nullptr;
+        return;
+    }
+
+    while (p->next != nullptr) {
+        if (p->next->info.id_barang == idBarang) {
+            adr_barang q = p->next;
+            p->next = q->next;
+            q->next = nullptr;
+            return;
         }
+        p = p->next;
     }
 }
 
 void deleteGudang(list_gudang &LG, string idGudang) {
-    adr_gudang p,q;
-    p = searchGudang(LG,idGudang);
-    if(LG.first==nullptr){
-        cout << "Data Barang sudah kosong" << endl;
-    }else if(cekgudangnull(p)){
-        cout << "Data tidak ditemukan" << endl;
-    }else{
-        if (LG.first == p) {
-            LG.first = p->next;
-        }
-        else {
-            q = LG.first;
-            while (q->next != p) {
-                q = q->next;
-            }
-            q->next = p->next;
-        }
+    if (LG.first == nullptr) return;
+
+    adr_gudang p = LG.first;
+    if (p->info.id_gudang == idGudang) {
+        LG.first = p->next;
         p->next = nullptr;
         p->firstChild = nullptr;
-        cout << "Gudang berhasil dihapus" << endl;
+        return;
+    }
+
+    while (p->next != nullptr) {
+        if (p->next->info.id_gudang == idGudang) {
+            adr_gudang q = p->next;
+            p->next = q->next;
+            q->next = nullptr;
+            q->firstChild = nullptr;
+            return;
+        }
+        p = p->next;
     }
 }
 
+/* SHOW */
 void showSemuaGudang(list_gudang LG) {
     adr_gudang p = LG.first;
-    if(LG.first==nullptr){
-        cout << "Gudang Kosong" << endl;
-    }else{
-        while(p!=nullptr){
-            cout << "ID Gudang: " << p->info.id_gudang << endl;
-            cout << "Nama Gudang: " << p->info.nama_gudang << endl << endl;
-            p = p->next;
-        }
+    while (p != nullptr) {
+        cout << "ID Gudang   : " << p->info.id_gudang << endl;
+        cout << "Nama Gudang : " << p->info.nama_gudang << endl << endl;
+        p = p->next;
     }
 }
 
 void showBarangGudang(list_gudang LG, string idGudang) {
-    adr_gudang p;
-    adr_barang q;
-    p = searchGudang(LG, idGudang);
-    if (p == nullptr) {
-        cout << "Data tidak ditemukan" << endl;
-    }else {
-        q = p->firstChild;
-        if (cekbarangnull(q)) {
-            cout << "Barang Kosong" << endl;
-        }else {
-            while (q != nullptr) {
-                cout << "ID Barang: " << q->info.id_barang << endl;
-                cout << "Nama Barang: " << q->info.nama_barang << endl;
-                cout << "Kuantitas: " << q->info.kuantitas << endl;
-                cout << "Jenis Komoditas: " << q->info.jenis_komoditas << endl;
-                cout << "Kondisi: " << q->info.kondisi << endl << endl;
-                q = q->next;
-            }
-        }
+    adr_gudang g = searchGudang(LG, idGudang);
+    if (g == nullptr) return;
+
+    adr_barang b = g->firstChild;
+    while (b != nullptr) {
+        showbarangtertentu(b);
+        b = b->next;
     }
 }
 
 void showSemuaBarangUnik(list_gudang LG) {
-    adr_gudang p = LG.first;
-    adr_barang q;
-    if(p==nullptr){
-            cout << "Barang Kosong" << endl;
-    }else{
-        while(p!=nullptr){
-                q = p->firstChild;
-                while(q!=nullptr){
-                    cout << "ID Barang: " << q->info.id_barang << endl;
-                    cout << "Nama Barang: " << q->info.nama_barang << endl;
-                    cout << "Kuantitas: " << q->info.kuantitas << endl;
-                    cout << "Jenis Komoditas: " << q->info.jenis_komoditas << endl;
-                    cout << "Kondisi: " << q->info.kondisi << endl << endl;
-                    q = q->next;
-            }
-        p=p->next;
+    adr_gudang g = LG.first;
+    while (g != nullptr) {
+        adr_barang b = g->firstChild;
+        while (b != nullptr) {
+            showbarangtertentu(b);
+            b = b->next;
         }
+        g = g->next;
     }
 }
 
-/* FITUR : hitung stok nya */
-adr_barang stokTerbanyak(list_gudang LG) {
-    adr_barang max;
-    adr_gudang p;
-    if (LG.first == nullptr) {
-        return nullptr;
-    }
-    p = LG.first;
-    max = nullptr;
-    while (p != nullptr) {
-        adr_barang x = stokTerbanyakPergudang(LG, p);
-        if (x != nullptr) {
-            if (max == nullptr || x->info.kuantitas > max->info.kuantitas) {
-                max = x;
-            }
-        }
-        p = p->next;
-    }
-    return max;
+/* HITUNG STOK */
+adr_barang stokTerbanyakPergudang(list_gudang, adr_gudang g) {
+    if (g == nullptr || g->firstChild == nullptr) return nullptr;
 
-}
-adr_barang stokTerbanyakPergudang(list_gudang LG,adr_gudang z){
-    adr_barang max,p;
-    if (z == nullptr || z->firstChild == nullptr) {
-        return nullptr;
-    }
-    max = z->firstChild;
-    p   = z->firstChild;
-    while (p != nullptr) {
-        if (p->info.kuantitas > max->info.kuantitas) {
+    adr_barang max = g->firstChild;
+    for (adr_barang p = g->firstChild; p != nullptr; p = p->next)
+        if (p->info.kuantitas > max->info.kuantitas)
             max = p;
-        }
-        p = p->next;
-    }
 
     return max;
 }
 
+adr_barang stokTersedikitPergudang(list_gudang, adr_gudang g) {
+    if (g == nullptr || g->firstChild == nullptr) return nullptr;
 
-adr_barang stokTersedikit(list_gudang LG) {
-    adr_barang min;
-    adr_gudang p;
-     if (LG.first == nullptr) {
-        return nullptr;
-    }
-    p = LG.first;
-    min = nullptr;
-    while (p != nullptr) {
-        adr_barang x = stokTersedikitPergudang(LG, p);
-        if (x != nullptr) {
-            if (min == nullptr || x->info.kuantitas < min->info.kuantitas) {
-                min = x;
-            }
-        }
-        p = p->next;
-    }
+    adr_barang min = g->firstChild;
+    for (adr_barang p = g->firstChild; p != nullptr; p = p->next)
+        if (p->info.kuantitas < min->info.kuantitas)
+            min = p;
+
     return min;
 }
-adr_barang stokTersedikitPergudang(list_gudang LG, adr_gudang z){
-    adr_barang min,p;
-    if (z == nullptr || z->firstChild == nullptr) {
-        return nullptr;
-    }
-    min = z->firstChild;
-    p   = z->firstChild;
-    while (p != nullptr) {
-        if (p->info.kuantitas < min->info.kuantitas) {
-            min = p;
-        }
-        p = p->next;
-    }
 
+adr_barang stokTerbanyak(list_gudang LG) {
+    adr_barang max = nullptr;
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next) {
+        adr_barang x = stokTerbanyakPergudang(LG, g);
+        if (x && (max == nullptr || x->info.kuantitas > max->info.kuantitas))
+            max = x;
+    }
+    return max;
+}
+
+adr_barang stokTersedikit(list_gudang LG) {
+    adr_barang min = nullptr;
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next) {
+        adr_barang x = stokTersedikitPergudang(LG, g);
+        if (x && (min == nullptr || x->info.kuantitas < min->info.kuantitas))
+            min = x;
+    }
     return min;
 }
 
 int hitungTotalStokGudang(list_gudang LG, string idGudang) {
-    adr_gudang p;
-    adr_barang q;
-    p = searchGudang(LG,idGudang);
     int total = 0;
-    q = p->firstChild;
-    while(q!=nullptr){
-        total=total+q->info.kuantitas;
-        q = q->next;
-    }
+    adr_gudang g = searchGudang(LG, idGudang);
+    for (adr_barang b = g->firstChild; b != nullptr; b = b->next)
+        total += b->info.kuantitas;
     return total;
 }
 
 int hitungStokBarangTertentu(list_gudang LG, string idGudang, string idBarang) {
-    adr_barang p;
-    adr_gudang q;
-    q = searchGudang(LG,idGudang);
-    p = searchBarang(q,idBarang);
-    return p->info.kuantitas;
+    adr_barang b = searchBarang(searchGudang(LG, idGudang), idBarang);
+    return b ? b->info.kuantitas : 0;
 }
 
-/* FITUR : cari barang spesifik */
-void cariBarangRusak(list_gudang LG) {
-    adr_gudang p = LG.first;
-    if(LG.first==nullptr){
-        cout << "Data Kosong" << endl;
-    }else{
-        while (p != nullptr) {
-            adr_barang q = p->firstChild;
-            while (q != nullptr) {
-                if (q->info.kondisi == "Rusak") {
-                    showbarangtertentu(q);
-                }
-                q = q->next;
+/* SORT GUDANG */
+void sortGudangAsc(list_gudang &LG) {
+    for (adr_gudang i = LG.first; i != nullptr; i = i->next)
+        for (adr_gudang j = i->next; j != nullptr; j = j->next)
+            if (i->info.nama_gudang > j->info.nama_gudang) {
+                swap(i->info, j->info);
+                swap(i->firstChild, j->firstChild);
             }
-            p = p->next;
-        }
-    }
+    showSemuaGudang(LG);
 }
 
+void sortGudangDesc(list_gudang &LG) {
+    for (adr_gudang i = LG.first; i != nullptr; i = i->next)
+        for (adr_gudang j = i->next; j != nullptr; j = j->next)
+            if (i->info.nama_gudang < j->info.nama_gudang) {
+                swap(i->info, j->info);
+                swap(i->firstChild, j->firstChild);
+            }
+    showSemuaGudang(LG);
+}
+
+/* SORT BARANG */
+void sortBarangStokAsc(adr_gudang G) {
+    if (G == nullptr) return;
+    for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
+        for (adr_barang j = i->next; j != nullptr; j = j->next)
+            if (i->info.kuantitas > j->info.kuantitas)
+                swap(i->info, j->info);
+
+    showBarangGudang({G}, G->info.id_gudang);
+}
+
+void sortBarangStokDesc(adr_gudang G) {
+    if (G == nullptr) return;
+    for (adr_barang i = G->firstChild; i != nullptr; i = i->next)
+        for (adr_barang j = i->next; j != nullptr; j = j->next)
+            if (i->info.kuantitas < j->info.kuantitas)
+                swap(i->info, j->info);
+
+    showBarangGudang({G}, G->info.id_gudang);
+}
+
+void sortBarangStokAscGlobal(list_gudang &LG) {
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next)
+        sortBarangStokAsc(g);
+}
+
+void sortBarangStokDescGlobal(list_gudang &LG) {
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next)
+        sortBarangStokDesc(g);
+}
+
+/* BARANG RUSAK */
+void cariBarangRusak(list_gudang LG) {
+    for (adr_gudang g = LG.first; g != nullptr; g = g->next)
+        for (adr_barang b = g->firstChild; b != nullptr; b = b->next)
+            if (b->info.kondisi == "Rusak")
+                showbarangtertentu(b);
+}
+
+/* TAMPIL BARANG */
 void showbarangtertentu(adr_barang q){
     cout << "────────────────────────────\n";
     cout << "🆔 ID Barang   : " << q->info.id_barang << endl;
@@ -315,7 +282,7 @@ void showbarangtertentu(adr_barang q){
     cout << "────────────────────────────\n\n";
 }
 
-
+/* UI */
 void ui() {
     cout << endl;
     cout << "╔════════════════════════════════════╗\n";
@@ -333,8 +300,13 @@ void ui() {
     cout << "10. 📊 Total Stok Gudang\n";
     cout << "11. 📦 Stok Barang Tertentu\n";
     cout << "12. 🚨 Barang Rusak\n";
+    cout << "────────────────────────────────────\n";
+    cout << "13. 🔤 Urutkan Gudang (A - Z)\n";
+    cout << "14. 🔤 Urutkan Gudang (Z - A)\n";
+    cout << "15. 🔢 Urutkan Barang per Gudang (Asc)\n";
+    cout << "16. 🔢 Urutkan Barang per Gudang (Desc)\n";
+    cout << "17. 🌐 Urutkan Semua Barang (Asc)\n";
+    cout << "18. 🌐 Urutkan Semua Barang (Desc)\n";
     cout << "0.  🚪 Keluar\n";
     cout << "────────────────────────────────────\n";
 }
-
-
