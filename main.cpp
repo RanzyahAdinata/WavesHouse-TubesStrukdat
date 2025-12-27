@@ -150,7 +150,6 @@ int main() {
             cariBarangRusak(LG);
             pause(1200);
         }
-
         else if (masukan == "13") {
             sortGudangAsc(LG);
             typeEffect("🔤 Gudang diurutkan A - Z\n\n");
@@ -190,6 +189,37 @@ int main() {
         else if (masukan == "18") {
             sortBarangStokDescGlobal(LG);
             typeEffect("🌐 Semua Barang (Stok DESC)\n\n");
+            showSemuaBarangUnik(LG);
+            pause(1200);
+        }
+        /* ===== SORTING ALFABET BARANG ===== */
+        else if (masukan == "19") {
+            cout << "ID Gudang : "; cin >> idGudang;
+            g = searchGudang(LG, idGudang);
+            if (!cekgudangnull(g)) {
+                sortBarangNamaAsc(g);
+                showBarangGudang(LG, idGudang);
+            }
+            pause(1200);
+        }
+        else if (masukan == "20") {
+            cout << "ID Gudang : "; cin >> idGudang;
+            g = searchGudang(LG, idGudang);
+            if (!cekgudangnull(g)) {
+                sortBarangNamaDesc(g);
+                showBarangGudang(LG, idGudang);
+            }
+            pause(1200);
+        }
+        else if (masukan == "21") {
+            sortBarangNamaAscGlobal(LG);
+            typeEffect("🌐 Semua Barang (Nama A - Z)\n\n");
+            showSemuaBarangUnik(LG);
+            pause(1200);
+        }
+        else if (masukan == "22") {
+            sortBarangNamaDescGlobal(LG);
+            typeEffect("🌐 Semua Barang (Nama Z - A)\n\n");
             showSemuaBarangUnik(LG);
             pause(1200);
         }
