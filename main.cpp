@@ -64,6 +64,7 @@ int main() {
         cin >> masukan;
 
         if (masukan == "1") {
+            clearScreen();
             typeEffect("➕ Menambah Gudang\n");
             cout << "ID Gudang   : "; cin >> gudang.id_gudang;
             cout << "Nama Gudang : "; cin >> gudang.nama_gudang;
@@ -71,6 +72,7 @@ int main() {
             loading("✔ Gudang berhasil ditambahkan");
         }
         else if (masukan == "2") {
+            clearScreen();
             typeEffect("📦 Menambah Barang ke Gudang\n");
             cout << "ID Gudang        : "; cin >> idGudang;
             cout << "ID Barang        : "; cin >> barang.id_barang;
@@ -84,6 +86,7 @@ int main() {
 
         /* UPDATE */
         else if (masukan == "3") {
+            clearScreen();
             typeEffect("✏️ Memperbarui Data Gudang\n");
             cout << "ID Gudang   : "; cin >> idGudang;
             cout << "Nama Baru   : "; cin >> gudang.nama_gudang;
@@ -91,6 +94,7 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "4") {
+            clearScreen();
             typeEffect("✏️ Memperbarui Data Barang\n");
             cout << "ID Gudang       : "; cin >> idGudang;
             cout << "ID Barang       : "; cin >> idBarang;
@@ -113,12 +117,14 @@ int main() {
 
         /* DELETE */
         else if (masukan == "5") {
+            clearScreen();
             typeEffect("🗑 Menghapus Gudang\n");
             cout << "ID Gudang : "; cin >> idGudang;
             deleteGudang(LG, idGudang);
             waitEnterAndClear();
         }
         else if (masukan == "6") {
+            clearScreen();
             typeEffect("❌ Menghapus Barang\n");
             cout << "ID Gudang : "; cin >> idGudang;
             cout << "ID Barang : "; cin >> idBarang;
@@ -128,16 +134,19 @@ int main() {
 
         /* SHOW */
         else if (masukan == "7") {
+            clearScreen();
             typeEffect("📋 Daftar Semua Gudang\n\n");
             showSemuaGudang(LG);
             waitEnterAndClear();
         }
         else if (masukan == "8") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             showBarangGudang(LG, idGudang);
             waitEnterAndClear();
         }
         else if (masukan == "9") {
+            clearScreen();
             typeEffect("📦 Semua Barang\n\n");
             showSemuaBarangUnik(LG);
             waitEnterAndClear();
@@ -145,21 +154,25 @@ int main() {
 
         /* STOK */
         else if (masukan == "10") {
+            clearScreen();
             b = stokTerbanyak(LG);
             if (!cekbarangnull(b)) showbarangtertentu(b);
             waitEnterAndClear();
         }
         else if (masukan == "11") {
+            clearScreen();
             b = stokTersedikit(LG);
             if (!cekbarangnull(b)) showbarangtertentu(b);
             waitEnterAndClear();
         }
         else if (masukan == "12") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             cout << "📊 Total Stok : " << hitungTotalStokGudang(LG, idGudang) << endl;
             waitEnterAndClear();
         }
         else if (masukan == "13") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             cout << "ID Barang : "; cin >> idBarang;
             cout << "📦 Total Stok : "
@@ -167,6 +180,7 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "14") {
+            clearScreen();
             typeEffect("🚨 Mencari Barang Rusak\n\n");
             cariBarangRusak(LG);
             waitEnterAndClear();
@@ -174,16 +188,19 @@ int main() {
 
         /* SORTING */
         else if (masukan == "15") {
+            clearScreen();
             sortGudangAsc(LG);
             showSemuaGudang(LG);
             waitEnterAndClear();
         }
         else if (masukan == "16") {
+            clearScreen();
             sortGudangDesc(LG);
             showSemuaGudang(LG);
             waitEnterAndClear();
         }
         else if (masukan == "17") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             g = searchGudang(LG, idGudang);
             if (!cekgudangnull(g)) sortBarangStokAsc(g);
@@ -191,6 +208,7 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "18") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             g = searchGudang(LG, idGudang);
             if (!cekgudangnull(g)) sortBarangStokDesc(g);
@@ -198,16 +216,19 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "19") {
+            clearScreen();
             sortBarangStokAscGlobal(LG);
             showSemuaBarangUnik(LG);
             waitEnterAndClear();
         }
         else if (masukan == "20") {
+            clearScreen();
             sortBarangStokDescGlobal(LG);
             showSemuaBarangUnik(LG);
             waitEnterAndClear();
         }
         else if (masukan == "21") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             g = searchGudang(LG, idGudang);
             if (!cekgudangnull(g)) sortBarangNamaAsc(g);
@@ -215,6 +236,7 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "22") {
+            clearScreen();
             cout << "ID Gudang : "; cin >> idGudang;
             g = searchGudang(LG, idGudang);
             if (!cekgudangnull(g)) sortBarangNamaDesc(g);
@@ -222,11 +244,13 @@ int main() {
             waitEnterAndClear();
         }
         else if (masukan == "23") {
+            clearScreen();
             sortBarangNamaAscGlobal(LG);
             showSemuaBarangUnik(LG);
             waitEnterAndClear();
         }
         else if (masukan == "24") {
+            clearScreen();
             sortBarangNamaDescGlobal(LG);
             showSemuaBarangUnik(LG);
             waitEnterAndClear();
