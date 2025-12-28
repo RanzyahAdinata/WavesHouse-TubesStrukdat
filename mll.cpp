@@ -41,6 +41,46 @@ void insertBarangKeGudang(list_gudang &LG, string idGudang, adr_barang B) {
     }
 }
 
+/* UPDATE GUDANG */
+void updateGudang(list_gudang &LG, string idGudang, string namaBaru) {
+    adr_gudang g = searchGudang(LG, idGudang);
+    if (g == nullptr) {
+        cout << "Gudang tidak ditemukan" << endl;
+    } else {
+        g->info.nama_gudang = namaBaru;
+        cout << "Data gudang berhasil diperbarui" << endl;
+    }
+}
+
+/* UPDATE BARANG */
+void updateBarang(
+    list_gudang &LG,
+    string idGudang,
+    string idBarang,
+    string namaBaru,
+    int stokBaru,
+    string jenisBaru,
+    string kondisiBaru
+) {
+    adr_gudang g = searchGudang(LG, idGudang);
+    if (g == nullptr) {
+        cout << "Gudang tidak ditemukan" << endl;
+        return;
+    }
+
+    adr_barang b = searchBarang(g, idBarang);
+    if (b == nullptr) {
+        cout << "Barang tidak ditemukan" << endl;
+    } else {
+        b->info.nama_barang = namaBaru;
+        b->info.kuantitas = stokBaru;
+        b->info.jenis_komoditas = jenisBaru;
+        b->info.kondisi = kondisiBaru;
+        cout << "Data barang berhasil diperbarui" << endl;
+    }
+}
+
+
 /* CEK */
 bool cekgudangnull(adr_gudang x) {
     return x == nullptr;
@@ -326,28 +366,30 @@ void ui() {
     cout << "╚════════════════════════════════════╝\n";
     cout << "1.  ➕🏭 Tambah Gudang\n";
     cout << "2.  ➕📦 Tambah Barang ke Gudang\n";
-    cout << "3.  ❌🏭 Hapus Gudang\n";
-    cout << "4.  ❌📦 Hapus Barang\n";
-    cout << "5.  📋🏭 Semua Gudang\n";
-    cout << "6.  📦🏭 Barang per Gudang\n";
-    cout << "7.  📋📦 Semua Barang\n";
-    cout << "8.  📈📦 Stok Terbanyak\n";
-    cout << "9.  📉📦 Stok Tersedikit\n";
-    cout << "10. 📊📦🏭 Total Stok Gudang\n";
-    cout << "11. 📦 Stok Barang Tertentu\n";
-    cout << "12. 🚨📦 Barang Rusak\n";
+    cout << "3.  ✏️🏭 Update Data Gudang\n";
+    cout << "4.  ✏️📦 Update Data Barang\n";
+    cout << "5.  ❌🏭 Hapus Gudang\n";
+    cout << "6.  ❌📦 Hapus Barang\n";
+    cout << "7.  📋🏭 Tampilkan Semua Gudang\n";
+    cout << "8.  📦🏭 Tampilkan Barang per Gudang\n";
+    cout << "9.  📋📦 Tampilkan Semua Barang\n";
+    cout << "10. 📈📦 Tampilkan Barang dengan Stok Terbanyak\n";
+    cout << "11. 📉📦 Tampilkan Barang dengan Stok Tersedikit\n";
+    cout << "12. 📊📦🏭 Hitung Total Stok Gudang\n";
+    cout << "13. 📦 Hitung Total Stok Barang Tertentu\n";
+    cout << "14. 🚨📦 Cari Barang Rusak\n";
     cout << "────────────────────────────────────\n";
-    cout << "13. 🔤🏭 Urutkan Gudang (A - Z)\n";
-    cout << "14. 🔤🏭 Urutkan Gudang (Z - A)\n";
+    cout << "15. 🔤🏭 Urutkan Gudang (A - Z)\n";
+    cout << "16. 🔤🏭 Urutkan Gudang (Z - A)\n";
     cout << "────────────────────────────────────\n";
-    cout << "15. 🔢📦📈 Urutkan Barang per Gudang (Stok Asc)\n";
-    cout << "16. 🔢📦📉 Urutkan Barang per Gudang (Stok Desc)\n";
-    cout << "17. 🔢🌐📦📈 Urutkan Semua Barang (Stok Asc)\n";
-    cout << "18. 🔢🌐📦📉 Urutkan Semua Barang (Stok Desc)\n";
-    cout << "19. 🔤📦 Urutkan Barang per Gudang (Nama A - Z)\n";
-    cout << "20. 🔤📦 Urutkan Barang per Gudang (Nama Z - A)\n";
-    cout << "21. 🔤🌐📦 Urutkan Semua Barang (Nama A - Z)\n";
-    cout << "22. 🔤🌐📦 Urutkan Semua Barang (Nama Z - A)\n";
+    cout << "17. 🔢📦📈 Urutkan Barang per Gudang (Stok Asc)\n";
+    cout << "18. 🔢📦📉 Urutkan Barang per Gudang (Stok Desc)\n";
+    cout << "19. 🔢🌐📦📈 Urutkan Semua Barang (Stok Asc)\n";
+    cout << "20. 🔢🌐📦📉 Urutkan Semua Barang (Stok Desc)\n";
+    cout << "21. 🔤📦 Urutkan Barang per Gudang (Nama A - Z)\n";
+    cout << "22. 🔤📦 Urutkan Barang per Gudang (Nama Z - A)\n";
+    cout << "23. 🔤🌐📦 Urutkan Semua Barang (Nama A - Z)\n";
+    cout << "24. 🔤🌐📦 Urutkan Semua Barang (Nama Z - A)\n";
     cout << "0.  🚪 Keluar\n";
     cout << "────────────────────────────────────\n";
 }
